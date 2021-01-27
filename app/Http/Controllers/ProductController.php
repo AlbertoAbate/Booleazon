@@ -86,7 +86,14 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+
+        //validation
+        $request->validate($this->Validation());
+
+        $product = Product::find($id);
+
+        
     }
 
     /**
