@@ -16,7 +16,7 @@ class ProductsTableSeeder extends Seeder
      */
     public function run(Faker $faker)
     {
-        Product::truncate();
+        //Product::truncate();
 
         //popoliamo il db
         for ($i=0; $i < 10 ; $i++) { 

@@ -25,7 +25,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('products.create');
     }
 
     /**
@@ -35,8 +35,23 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    {   
+        //get from data
+        $data= $request->all();
+        
+        //validation
+        $request->validate($this->Validation());
+
+        //salvataggio nel db
+        $newProduct = new Product();
+        $newProduct->fill($data);
+        $saved = $newProduct->save();
+
+        if ($saved) {
+            return redirect()->route('products.index');
+        } else {
+            return redirect()->route('homepage');
+        }
     }
 
     /**
@@ -56,9 +71,10 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Product $product)
     {
-        //
+        
+        return view('products.edit', compact('product'));
     }
 
     /**
@@ -82,5 +98,15 @@ class ProductController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    //funzione per la validazione
+    private function Validation() {
+        return [
+            'name'=> 'required',
+            'productor'=> 'required',
+            'description' => 'required',
+            'price'=> 'required|regex:/^\d*(\.\d{2})?$/'
+        ];
     }
 }

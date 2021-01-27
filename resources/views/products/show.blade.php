@@ -12,5 +12,5 @@
     <p>{{ $product->description }}</p>  
     <h3>{{ $product->price }}</h3> 
     <img src="{{ $product->image }}" alt="{{ $product->name }}">
-
+    <a class="btn btn-primary" href="{{ route('products.edit', $product->id) }}">Edit</a>
 @endsection
