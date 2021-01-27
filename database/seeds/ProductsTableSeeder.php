@@ -26,10 +26,10 @@ class ProductsTableSeeder extends Seeder
             $newProduct->productor = $faker->username();
             $newProduct->description = $faker->text(255);
             $newProduct->price = $faker->randomNumber(6);
-            // $newProduct->image = $faker->url();
-            $image = $faker->image(null, 640, 480);
-            $imageFile = new File($image);
-            $newProduct->image = Storage::disk('public')->putFile('images', $imageFile);
+            $newProduct->image = $faker->imageUrl(640,480);
+            // $image = $faker->image(null, 640, 480);
+            // $imageFile = new File($image);
+            // $newProduct->image = Storage::disk('public')->putFile('images', $imageFile);
 
             //salvataggio
             $newProduct->save();

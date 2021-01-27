@@ -14,3 +14,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'StaticPageController@home' )->name('homepage');
+
+Route::resource('products', 'ProductController');
