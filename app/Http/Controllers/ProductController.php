@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Product;
+use Illuminate\Support\Str; // Per slug
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -14,7 +16,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+
+        $products = Product::orderBy('created_at', 'desc')->paginate(3);
+
+
         return view('products.index', compact('products'));
     }
 
@@ -42,6 +47,12 @@ class ProductController extends Controller
         //validation
         $request->validate($this->Validation());
 
+        $data['slug'] = Str::slug($data['name'], '-');
+
+        if (!empty($data['image'])) {
+            $data['image'] = Storage::disk('public')->put('images', $data['image']);
+        }
+
         //salvataggio nel db
         $newProduct = new Product();
         $newProduct->fill($data);
@@ -52,6 +63,7 @@ class ProductController extends Controller
         } else {
             return redirect()->route('homepage');
         }
+
     }
 
     /**
@@ -60,8 +72,14 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show($slug)
     {
+        $product = Product::where('slug', $slug)->first();
+
+        // 404 check
+        $this->errorPages($product);
+
+
         return view('products.show', compact('product'));
     }
 
@@ -71,9 +89,13 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit($slug)
     {
-        
+        $product = Product::where('slug', $slug)->first();
+
+        // 404 check
+        $this->errorPages($product);
+
         return view('products.edit', compact('product'));
     }
 
@@ -93,7 +115,23 @@ class ProductController extends Controller
 
         $product = Product::find($id);
 
-        
+        $data['slug'] = Str::slug($data['name'], '-');
+
+        if (!empty($data['image'])) {
+            // RIMUOVERE VECCHIA IMG
+            if (!empty($product->image)) {
+                Storage::disk('public')->delete($product->image);
+            }
+            $data['image'] = Storage::disk('public')->put('images', $data['image']);
+        }
+
+        $updated = $product->update($data);
+
+        if($updated){
+            return redirect()->route('products.show', $product->slug);
+        } else {
+            return redirect()->route('homepage');
+        }     
     }
 
     /**
@@ -102,9 +140,20 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        //
+        $name = $product->name;
+        $image = $product->image;
+        $deleted = $product->delete();
+
+        if($deleted){
+            if (!empty($image)) {
+                Storage::disk('public')->delete($image);
+            }
+            return redirect()->route('products.index')->with('deleted', $name);
+        } else{
+            return redirect()->route('homepage');
+        }
     }
 
     //funzione per la validazione
@@ -116,4 +165,12 @@ class ProductController extends Controller
             'price'=> 'required|regex:/^\d*(\.\d{2})?$/'
         ];
     }
+
+    private function errorPages($var)
+    {
+        if (empty($var)) {
+            abort(404);
+        }
+    }
+
 }

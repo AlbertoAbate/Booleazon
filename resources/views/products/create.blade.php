@@ -5,6 +5,7 @@
 @endsection
 
 @section('content')
+<div class="container">
     <h1>ciao</h1>
 
     @if ($errors->any())
@@ -33,7 +34,7 @@
         </div>
         <div class="form-group">
             <label for="description">Descrizione</label>
-            <input class="form-control" type="text" name="description" value="{{ old('description') }}">
+             <textarea class="form-control" name="description">{{ old('description') }}</textarea>
         </div>
         <div class="form-group">
             <label for="price">Prezzo</label>
@@ -47,4 +48,6 @@
             <input class="btn btn-primary" type="submit" value="Crea">
         </div>
     </form>
+</div>
+    
 @endsection
