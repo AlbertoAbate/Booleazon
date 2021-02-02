@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<div class="container">
+<div class="container text-white mb-5">
     <h1>ciao</h1>
 
     <h2>{{ $product->name }}</h2>
@@ -19,7 +19,7 @@
         <img width="300" src="{{ asset('img/placeholder.jpg') }}" alt="">
     @endif
 
-    <a class="btn btn-primary" href="{{ route('products.edit', $product->slug) }}">Edit</a>
+    <a class="btn btn-success ml-5" href="{{ route('products.edit', $product->slug) }}">Edit</a>
 
     <form class="d-inline" action="{{ route('products.destroy', $product->id) }}" method="POST">
         @csrf

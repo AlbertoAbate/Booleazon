@@ -13,27 +13,34 @@
     @endif
 
 
-    <ul>
+    <ul class="d-flex flex-wrap justify-content-around pt-5">
         @foreach ($products as $product)
-        <li>
-            <h2>{{ $product->name }}</h2>
-            <h4>{{ $product->productor }}</h4>  
-            <h3>{{ $product->price }}€</h3> 
+        <li class="card mb-2 mt-2" style="width: 18rem;">
             @if(!empty($product->image))
-                <img width="200" src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
+                <img class="card-img-top"
+                width="200" src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
             @else
-                <img width="200" src="{{ asset('img/placeholder.jpg') }}" alt="">
-            @endif
+                <img class="card-img-top"
+                width="200" src="{{ asset('img/placeholder.jpg') }}" alt="">
+            @endif        
+            <div class="card-body">            
+                <h2 class="card-title">{{ $product->name }}</h2>
+                <h4 class="card-text">{{ $product->productor }}</h4>  
+                <h3 class="card-text">{{ $product->price }}€</h3> 
+            </div>
+            <a href="{{ route('products.show', $product->slug) }}" class="btn btn-success">
+                Show  
+            </a>
         </li>
 
-        <a href="{{ route('products.show', $product->slug) }}" class="btn btn-primary">
-           Show  
-        </a>
+        
         @endforeach
 
     </ul>
 
-    {{ $products->links() }}
+    <div class="d-flex justify-content-center">
+        {{ $products->links() }}
+    </div>
     </div>
     
 @endsection

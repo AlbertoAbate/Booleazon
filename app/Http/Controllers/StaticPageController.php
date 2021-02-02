@@ -9,7 +9,7 @@ class StaticPageController extends Controller
 {
     public function home() {
 
-        $products = Product::all();
+        $products = Product::orderBy('created_at', 'asc')->limit(5)->get();
         
         return view('home', compact('products'));
     } 

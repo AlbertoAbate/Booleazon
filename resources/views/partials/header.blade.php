@@ -1,7 +1,7 @@
 <header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark position-fixed container-fluid">
       <div class="container">
-        <a class="navbar-brand" href="{{ route('homepage') }}">Home</a>
+        <img width="200" src="{{ asset('img/booleazon-logo.svg') }}" alt="">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>

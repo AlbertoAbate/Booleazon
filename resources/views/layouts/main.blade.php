@@ -10,7 +10,7 @@
         @yield('title-page')
 
     </head>
-    <body>
+    <body class="bg-secondary">
         @include('partials.header')
         <main>
             @yield('content')
